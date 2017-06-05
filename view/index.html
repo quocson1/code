@@ -5,7 +5,8 @@
 	<title>Document</title>
 </head>
 <body>
-	<form action="/add" method="POST">
+<!--  -->
+	<form action="/bill/add" method="POST">
 		<label for="name">Name:</label>
 		<input type="text" name="name"/><br>
 		<label for="product">Product:</label>
@@ -16,14 +17,20 @@
 		<input type="number" name="phone"/><br>
 		<button type="submit">Add</button>
 	</form>
-	<form action="/show">
+	<!--  -->
+
+	<form action="/bill/show">
 		<button type="subbmit">show all</button>
 	</form>
-	<form action="/remove/all">
+	<!--  -->
+
+	<form action="/bill/delete-all">
 		<button type="subbmit">remove all</button>
 	</form>
 	<br>
-	<form action="/update" method="PUT">
+	<!--  -->
+
+	<form action="/bill/update" method="PUT">
 		<label for="id">Id_Update:</label>
 		<input type="text" name="id"/><br>
 		<label for="name">Name_New:</label>
@@ -31,13 +38,17 @@
 		<button type="submit">Update</button>
 	</form>
 	<br>
-	<form action="/checkphone" method="POST">
+	<!--  -->
+
+	<form action="/bill/check-phone" method="POST">
 		<label for="phone">Number Phone</label>
 		<input type="number" name="phone"/><br>
 		<button type="subbmit">CHECK</button>
 	</form>
 	<br>
-	<form action="/remove" method="POST">
+	<!--  -->
+	
+	<form action="/bill/delete-one-bill" method="PUT">
 		<label for="id">_ID</label>
 		<input type="text" name="id"/><br>
 		<button type="subbmit">DELETE</button>
