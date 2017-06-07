@@ -45,3 +45,6 @@ module.exports.DeleteBill = function(id,limit){
 	Bill.remove(query,limit);
 }
 
+
+
+
