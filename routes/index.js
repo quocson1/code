@@ -1,84 +1,43 @@
 var Bill = require('../models/Bill');
 
-module.exports = function(app){
-//view
-app.get('/',function(req,res){
-    res.sendfile('./view/index.html');
-});
+module.exports = function(router){
 
-//get information user buyer
-app.post('/bill/add',function(req,res){
-    var bill = req.body;
-    Bill.addBill(bill,function(err,Bill){
-        if(err){
-            throw err;
-        }
-        res.send(Bill);
-    });
+
+ //view   
+router.get('/',(req,res) => res.sendfile('./view/index.html'));
+
+//get information user bill
+router.post('/bill/add',(req,res) =>{
+    let bill = req.body;
+        Bill.addBill(bill,Bill).then((Bill) => res.send(Bill),(err) => res.send(err + ''));
 });
 
 //show all bill
-app.get('/bill/show',function(req,res){
-    Bill.getAllBill(function(err,Bill){
-        if(err){
-            throw err;
-        }
-        res.send(Bill);
-
-    })
-
-})
+router.get('/bill/show',(req,res) =>{
+     Bill.getAllBill(Bill).then((Bill) => res.send(Bill),(err) => res.send(err +''));
+});
 
 //remove all bill
-app.get('/bill/delete-all',function(req,res){
-    Bill.removeAll(function(err,Bill){
-        if(err){
-            throw err;
-        }
-        res.send('remove all seccessful');
-
-    })
-})
+router.get('/bill/delete-all',(req,res) =>{
+    Bill.removeAll(Bill).then(() => res.send('seccessful'),(err) => res.send(err + '')); 
+});
 
 //check number phone get user
-app.post('/bill/check-phone',function(req,res){
-    console.log(req.body.phone);
-    Bill.getBillByPhone(req.body.phone,function(err,Bill){
-        if(err){
-            throw err;
-        }
-        res.send(Bill);
-
-    })
-
-})
-
+router.post('/bill/check-phone',(req,res) =>{
+    Bill.getBillByPhone(req.body.phone,Bill).then((Bill) => res.send(Bill),(err) => res.send(err+ ''));       
+});
 
 //update name by id 
-app.get('/bill/update',function(req,res){
+router.get('/bill/update',function(req,res){
     var id = req.query.id;
     var nameUP = req.query.name;
-    Bill.UpdateBill(id,nameUP,function(err,Bill){
-        if(err){
-            throw err;
-        }
-        res.send('update seccessful');
-
-    })
-
-})
+    Bill.UpdateBill(id,nameUP,Bill).then(() => res.send('update :' + nameUP + 'seccessful' ),(err) => res.send(err + ''));
+});
 
 //delete one bill by id
-app.get('/bill/delete-one-bill',function(req,res){
+router.get('/bill/delete-one-bill',function(req,res){
     var id = req.query.id;
-    Bill.DeleteBill(id,function(err,Bill){
-        if(err){
-            throw err;
-        }
-        res.send('delete id: '+ id+' seccessful');
+    Bill.DeleteBill(id,Bill).then(() => res.send('delete id: '+ id+' seccessful' ),(err) => res.send(err +''));
 
-    })
-
-})
-
+});
 };

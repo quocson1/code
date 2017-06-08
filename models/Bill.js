@@ -10,39 +10,49 @@ var receiptSchema = new mongoose.Schema({
 var Bill = module.exports = mongoose.model('Bill',receiptSchema);
 
 //get all bill
-module.exports.getAllBill = function(callback,limit){
-	Bill.find(callback).limit(limit);
-}
+module.exports.getAllBill = function(limit){
+	return new Promise((resolve,reject)=>{
+		//if = ?? ...
+		// if(){
+		// 	return reject(new Error('khong co du lieu' ));
+		// }
+		resolve(Bill.find(limit));
+	});
+};
 
 //get bill by phone
-module.exports.getBillByPhone = function(xphone,limit){
-	Bill.find({phone:xphone},limit);
-}
+module.exports.getBillByPhone = (xphone,limit) =>{
+	return new Promise((resolve,reject) => resolve(Bill.find({phone:xphone},limit)));
+};
 
 //add bill new 
-module.exports.addBill= function(bill,limit){
-	Bill.create(bill,limit);
-}
+module.exports.addBill= (bill,limit) =>{
+	return new Promise((resolve,resject) => resolve(Bill.create(bill,limit)));
+};
 
 //remove all bill 
-module.exports.removeAll = function(limit){
-	Bill.remove(limit);
-}
+module.exports.removeAll = (limit) =>{
+	return new Promise((resolve, resject) => resolve(Bill.remove(limit)));
+};
 
 //update name by id 
-module.exports.UpdateBill = function(id,bill,options,limit){
-	var query = {_id:id};
-	var update = {
-		name:bill
-	}
-	Bill.update(query,update,options,limit);
-}
+module.exports.UpdateBill = function(id,bill,limit){
+	return new Promise((resolve,resject) =>{
+		let query = {_id:id};
+		let update = {
+			name:bill
+		}
+		resolve(Bill.update(query,update,limit));
+	});
+};
 
 
 //delete one bill
 module.exports.DeleteBill = function(id,limit){
-	var query = {_id:id};
-	Bill.remove(query,limit);
+	return new Promise((resolve,resject) =>{
+		let query ={_id:id};
+		resolve(Bill.remove(query,limit));
+	});
 }
 
 

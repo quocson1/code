@@ -1,19 +1,30 @@
-var express = require('express');
+const express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var router = express.Router();
+const router = express.Router();
 
-require('./routes/index') (router);
+//shoulde rename index to anthor
+const index = require('./routes/index') (router);
+// appled promise
+//const indexPromise = require('./routes/index-promise') (router);
 
 app.use(bodyParser.urlencoded({extended: false}));
+//use router
+app.use('/',router);
+//app.use('promise',router);
 
-//connect data mongodb
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/data');
-
-app.use(router); 
 
 // Listen
 var port = process.env.PORT || 3000;
-app.listen(port);
-console.log('Listening on localhost:'+ port);
+
+//connect data mongodb
+var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+mongoose.connect('mongodb://localhost:27017/data',function(err){
+	if(err){
+		console.log('connecting to mongodb failure!');
+	}
+	//start server
+	app.listen(port);
+	console.log('Listening on localhost:'+ port);
+});
