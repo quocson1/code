@@ -99,7 +99,7 @@ module.exports.UpdateTime = function(id,bill){
 };
 
 //get report by date and hour 
-module.exports.getReportByTime = (xdate,xtime,limit) =>{
+module.exports.getReportByDateAndTime = (xdate,xtime,limit) =>{
 	let qry = {
 		date:xtime
 	}

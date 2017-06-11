@@ -19,10 +19,10 @@ module.exports = function(router){
  });
 
 //get report by date and hour 
-router.get('/report/:day/:time',(req,res) =>{
-    let times = req.params.time;
-    let days = req.params.day;
-    report.getReportByTime(days,times,report).then((Bill) => 
+router.get('/report',(req,res) =>{
+    let times = req.query.time;
+    let days = req.query.date;
+    report.getReportByDateAndTime(days,times,report).then((Bill) => 
         res.send(Bill),
         (err) => res.send(err+ ''));     
     //res.send(day);  
