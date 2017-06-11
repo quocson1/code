@@ -7,7 +7,7 @@ module.exports = function(router){
 
 
     //runs every hour
-     cron.schedule('0 0 * * * *', function () {
+     cron.schedule('*/10 * * * * *', function () {
         let time = null;
         let D = new Date();
         let timeNow = Number(D.getHours());
@@ -18,6 +18,15 @@ module.exports = function(router){
         console.log('running a task every hour');
  });
 
+//get report by date and hour 
+router.get('/report/:day/:time',(req,res) =>{
+    let times = req.params.time;
+    let days = req.params.day;
+    report.getReportByTime(days,times,report).then((Bill) => 
+        res.send(Bill),
+        (err) => res.send(err+ ''));     
+    //res.send(day);  
+});
 
  //view   
 router.get('/',(req,res) => {
@@ -32,7 +41,8 @@ router.post('/bill/add',(req,res) =>{
             var addrport = {
                 product: Bill.product,
                 number: Bill.number,
-                time: null
+                time: null,
+                date: Bill.date
             }
             // Save data to report every time someone purchases with time = null;
             report.addReport(addrport,report).then((report) => 
@@ -64,8 +74,8 @@ router.post('/bill/check-phone',(req,res) =>{
 
 //update name by id 
 router.get('/bill/update',function(req,res){
-    var id = req.query.id;
-    var nameUP = req.query.name;
+    let id = req.query.id;
+    let nameUP = req.query.name;
     Bill.UpdateBill(id,nameUP,Bill).then(() => 
         res.send('update seccessful' ),
         (err) => res.send(err + ''));
@@ -73,10 +83,12 @@ router.get('/bill/update',function(req,res){
 
 //delete one bill by id
 router.get('/bill/delete-one-bill',function(req,res){
-    var id = req.query.id;
+    let id = req.query.id;
     Bill.DeleteOneBill(id).then(() => 
         res.send('delete id: '+ id+' seccessful' ),
         (err) => res.send(err +''));
 
 });
+
+
 };

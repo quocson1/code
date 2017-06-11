@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 //bill Schema
 var receiptSchema = new mongoose.Schema({
     name: { type: String }, product: String, phone: Number,
-    number: Number,  date: { type: Date, default: Date.now }},{
+    number: Number,  date: { type: String, default: (new Date()).getDate() + '-' + ((new Date()).getMonth()+1) +'-'+(new Date()).getFullYear() }},{
     versionKey: false
 
     });
@@ -11,7 +11,7 @@ var receiptSchema = new mongoose.Schema({
 
 var reportSchema = new mongoose.Schema({
 	 name: { type: String }, product: String, phone: Number,
-    number: Number,  time: Number}, {
+    number: Number,  time: Number , date: String}, {
     	versionKey: false
     });
 //})
@@ -95,5 +95,15 @@ module.exports.UpdateTime = function(id,bill){
 			time: bill 
 		}
 		resolve(report.update(query,update,{multi: true}));
+	});
+};
+
+//get report by date and hour 
+module.exports.getReportByTime = (xdate,xtime,limit) =>{
+	let qry = {
+		date:xtime
+	}
+	return new Promise((resolve,reject) => {
+		resolve(report.find({date:xdate,time:xtime},limit))
 	});
 };
