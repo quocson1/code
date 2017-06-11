@@ -7,7 +7,7 @@ module.exports = function(router){
 
 
     //runs every hour
-     cron.schedule('*/10 * * * * *', function () {
+     cron.schedule('0 0 * * * *', function () {
         let time = null;
         let D = new Date();
         let timeNow = Number(D.getHours());
