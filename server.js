@@ -1,16 +1,19 @@
 const express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+const cron = require('node-cron');
 const router = express.Router();
+
 
 //shoulde rename index to anthor
 const index = require('./routes/index') (router);
 // appled promise
 //const indexPromise = require('./routes/index-promise') (router);
-
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 //use router
-app.use('/',router);
+app.use('/',(router));
+
 //app.use('promise',router);
 
 
