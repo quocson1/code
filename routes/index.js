@@ -5,7 +5,7 @@ var every = require('every-moment');
 
 module.exports = function(router){
     //runs every hour 
-    every(5,'second',()=>{
+    every(1,'hour',()=>{
         let time = null;
         let D = new Date();
         let timeNow = Number(D.getHours());
