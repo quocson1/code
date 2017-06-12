@@ -1,22 +1,32 @@
 var Bill = require('../models/Bill');
 var report = require('../models/Bill');
-const cron = require('node-cron');
+var every = require('every-moment');
 
 
 module.exports = function(router){
-
-
-    //runs every hour
-     cron.schedule('0 0 * * * *', function () {
+    //runs every hour 
+    every(5,'second',()=>{
         let time = null;
         let D = new Date();
         let timeNow = Number(D.getHours());
-        //Update the reports with time == null to the current time
-        report.UpdateTime(time,timeNow).then(() => 
-            console.log('update seccessful' ),
-            (err) => console.log(err + ''))
-        console.log('running a task every hour');
- });
+        Bill.getAllBill(Bill).then((Bill) =>{ 
+        for(let i in Bill){
+            var json = {
+                number:Bill[i].number,
+                product:Bill[i].product,
+                time:Bill[i].time,
+                date: Bill[i].date
+            }
+            if(Bill[i].time == timeNow){
+                report.addReport(json,report).then((report) => 
+                    console.log('add report to user seccessful'),
+                    (err)=> console.log(err+''));
+            }
+
+        }
+    },(err) => res.send(err +''));
+         console.log('running a task every hour');
+});
 
 //get report by date and hour 
 router.get('/report',(req,res) =>{
@@ -27,35 +37,24 @@ router.get('/report',(req,res) =>{
         (err) => res.send(err+ ''));     
     //res.send(day);  
 });
-
  //view   
-router.get('/',(req,res) => {
+ router.get('/',(req,res) => {
     res.sendfile('./view/index.html')
 });
 
 //add bill 
 router.post('/bill/add',(req,res) =>{
     let bill = req.body;
-        Bill.addBill(bill,Bill).then((Bill) =>{ 
-            res.send(Bill);
-            var addrport = {
-                product: Bill.product,
-                number: Bill.number,
-                time: null,
-                date: Bill.date
-            }
-            // Save data to report every time someone purchases with time = null;
-            report.addReport(addrport,report).then((report) => 
-                console.log('add report to user seccessful'),
-                (err)=> console.log(err+''));
-        },(err) => res.send(err + ''));
+    Bill.addBill(bill,Bill).then((Bill) => 
+        res.send(Bill),
+        (err) => res.send(err + ''));
 });
 
 //show all bill
 router.get('/bill/show',(req,res) =>{
-     Bill.getAllBill(Bill).then((Bill) => 
-        res.send(Bill),
-        (err) => res.send(err +''));
+   Bill.getAllBill(Bill).then((Bill) => 
+    res.send(Bill),
+    (err) => res.send(err +''));
 });
 
 //remove all bill

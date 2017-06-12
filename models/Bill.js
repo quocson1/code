@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 //bill Schema
 var receiptSchema = new mongoose.Schema({
+	time:{type: Number, default:Number((new Date()).getHours())},
     name: { type: String }, product: String, phone: Number,
     number: Number,  date: { type: String, default: (new Date()).getDate() + '-' + ((new Date()).getMonth()+1) +'-'+(new Date()).getFullYear() }},{
     versionKey: false
@@ -82,19 +83,6 @@ module.exports.DeleteOneBill = function(id){
 module.exports.addReport= (bill,limit) =>{
 	return new Promise((resolve,resject) => {
 		resolve(report.create(bill,limit))
-	});
-};
-
-
-//update time of report
-module.exports.UpdateTime = function(id,bill){
-	return new Promise((resolve,resject) =>{
-
-		let query = {time:id};
-		let update = {
-			time: bill 
-		}
-		resolve(report.update(query,update,{multi: true}));
 	});
 };
 
