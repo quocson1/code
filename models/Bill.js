@@ -11,6 +11,7 @@ var receiptSchema = new mongoose.Schema({
 //});
 
 var reportSchema = new mongoose.Schema({
+	_id: Number,
 	 name: { type: String }, product: String, phone: Number,
     number: Number,  time: Number , date: String}, {
     	versionKey: false
@@ -78,20 +79,35 @@ module.exports.DeleteOneBill = function(id){
 }
 
 
-//module database report 
-//add report 
-module.exports.addReport= (bill,limit) =>{
-	return new Promise((resolve,resject) => {
-		resolve(report.create(bill,limit))
-	});
+
+// thống kê số lượng sum sản phẩm
+module.exports.StatisticsNumberProducts = (time) =>{
+	return new Promise((resolve,reject) =>{
+		//  let D = new Date();
+		//  let timeNow = Number(D.getHours());
+		// if(timeNow == time){
+		resolve(Bill.aggregate([
+			{$match: {time:time}},
+			{$group:{
+				_id: "$product",
+				soluong: {$sum: "$number"}
+			}},
+			{$sort : {soluong: -1,_id: 1}}
+			]))
+	}
+	)
+
 };
 
-//get report by date and hour 
-module.exports.getReportByDateAndTime = (xdate,xtime,limit) =>{
-	let qry = {
-		date:xtime
-	}
-	return new Promise((resolve,reject) => {
-		resolve(report.find({date:xdate,time:xtime},limit))
-	});
+//inserts report
+module.exports.inserts =(id,product,number,time,date,limit) =>{
+	return new Promise((resolve,reject) =>{
+		resolve(new report({
+			_id:id,
+			product:product,
+			number:number,
+			time:time,
+			date:date
+		}).save(limit))
+	})
 };

@@ -10,7 +10,7 @@ const index = require('./routes/index') (router);
 // appled promise
 //const indexPromise = require('./routes/index-promise') (router);
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 //use router
 app.use('/',(router));
 

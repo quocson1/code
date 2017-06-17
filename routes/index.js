@@ -4,29 +4,18 @@ var every = require('every-moment');
 
 
 module.exports = function(router){
-    //runs every hour 
-    every(1,'hour',()=>{
-        let time = null;
-        let D = new Date();
-        let timeNow = Number(D.getHours());
-        Bill.getAllBill(Bill).then((Bill) =>{ 
-        for(let i in Bill){
-            var json = {
-                number:Bill[i].number,
-                product:Bill[i].product,
-                time:Bill[i].time,
-                date: Bill[i].date
+    let D = new Date();
+    let timeNow = Number(D.getHours());
+    let dateNow = String(D.getDate() + '/'+D.getMonth() +'/'+D.getFullYear());
+    every(1,'seconds',()=>{
+        Bill.StatisticsNumberProducts(timeNow).then((bill) => {
+            for(let i in bill){
+                report.inserts(i,bill[i]._id,bill[i].soluong,timeNow,dateNow);
             }
-            if(Bill[i].time == timeNow){
-                report.addReport(json,report).then((report) => 
-                    console.log('add report to user seccessful'),
-                    (err)=> console.log(err+''));
-            }
-
-        }
-    },(err) => res.send(err +''));
+        },(err) => console.log(err + ''))
          console.log('running a task every hour');
-});
+    });
+
 
 //get report by date and hour 
 router.get('/report',(req,res) =>{
@@ -45,6 +34,7 @@ router.get('/report',(req,res) =>{
 //add bill 
 router.post('/bill/add',(req,res) =>{
     let bill = req.body;
+    console.log(bill);
     Bill.addBill(bill,Bill).then((Bill) => 
         res.send(Bill),
         (err) => res.send(err + ''));
