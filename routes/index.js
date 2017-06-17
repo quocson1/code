@@ -7,7 +7,7 @@ module.exports = function(router){
     let D = new Date();
     let timeNow = Number(D.getHours());
     let dateNow = String(D.getDate() + '/'+D.getMonth() +'/'+D.getFullYear());
-    every(1,'seconds',()=>{
+    every(1,'hour',()=>{
         Bill.StatisticsNumberProducts(timeNow).then((bill) => {
             for(let i in bill){
                 report.inserts(i,bill[i]._id,bill[i].soluong,timeNow,dateNow);
@@ -15,7 +15,6 @@ module.exports = function(router){
         },(err) => console.log(err + ''))
          console.log('running a task every hour');
     });
-
 
 //get report by date and hour 
 router.get('/report',(req,res) =>{
