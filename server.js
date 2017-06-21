@@ -7,12 +7,14 @@ const router = express.Router();
 
 //shoulde rename index to anthor
 const index = require('./routes/index') (router);
+const index2 = require('./every-Time/every') (router);
 // appled promise
 //const indexPromise = require('./routes/index-promise') (router);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 //use router
 app.use('/',(router));
+
 
 //app.use('promise',router);
 
